@@ -3,13 +3,17 @@ package saif.rest.springrest.Services;
 
 
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+@Repository
+@Profile("database")
 public class CourseService implements CRUD{
 
     private final JdbcTemplate jdbcTemplate;
