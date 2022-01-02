@@ -1,8 +1,7 @@
 package saif.rest.springrest.DAO;
 
-import java.io.Serializable;
 
-public class Course implements Serializable {
+public class Course {
     private String id;
     private String name;
     private String section;

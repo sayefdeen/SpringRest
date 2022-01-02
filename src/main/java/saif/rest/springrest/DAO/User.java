@@ -2,30 +2,25 @@ package saif.rest.springrest.DAO;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 
-import java.io.Serializable;
 import java.util.UUID;
 
-public abstract class User implements Serializable {
+public abstract class User {
 
     private  String id;
-    private  String name;
+    private  String email;
     private  String password;
 
     public User() {}
 
-    public User(String name, String password,boolean isNew) throws Exception {
-        this.name = name;
+    public User(String email, String password){
+        this.email = email;
         this.id = UUID.randomUUID().toString();
-        if(isNew){
-            this.password = bcryptPass(password);
-        }else{
-            this.password = password;
-        }
+        this.password = bcryptPass(password);
     }
 
     public User(String id, String name, String password) {
         this.id = id;
-        this.name = name;
+        this.email = name;
         this.password = password;
     }
 
@@ -33,8 +28,8 @@ public abstract class User implements Serializable {
         return id.toString();
     }
 
-    public String getName() {
-        return name;
+    public String getEmail() {
+        return email;
     }
 
     public String getPassword() {
@@ -45,8 +40,8 @@ public abstract class User implements Serializable {
         this.id = id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setEmail(String name) {
+        this.email = name;
     }
 
     public void setPassword(String password) {

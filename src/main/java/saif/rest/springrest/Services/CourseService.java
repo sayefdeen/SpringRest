@@ -6,18 +6,15 @@ package saif.rest.springrest.Services;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-public class Course implements CRUD{
+public class CourseService implements CRUD{
 
     private final JdbcTemplate jdbcTemplate;
 
-    public Course(JdbcTemplate jdbcTemplate) {
+    public CourseService(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 

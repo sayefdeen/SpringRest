@@ -1,19 +1,23 @@
 package saif.rest.springrest.Services;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
+import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.stereotype.Repository;
+import saif.rest.springrest.DAO.Students;
 
 
 import java.sql.*;
 
-
-public class Students implements CRUD{
+@Repository
+@Profile("database")
+public class StudentsService implements CRUD{
 
     private final JdbcTemplate jdbcTemplate;
 
-    public Students(JdbcTemplate jdbcTemplate) {
+    public StudentsService(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
@@ -30,9 +34,9 @@ public class Students implements CRUD{
                     insertQuery,
                     Statement.RETURN_GENERATED_KEYS);
 
-            statement.setString(1, (( saif.rest.springrest.DAO.Students) object).getId());
-            statement.setString(2, ((saif.rest.springrest.DAO.Students) object).getName());
-            statement.setString(3, (( saif.rest.springrest.DAO.Students) object).getPassword());
+            statement.setString(1, ((Students) object).getId());
+            statement.setString(2, ((Students) object).getEmail());
+            statement.setString(3, ((Students) object).getPassword());
 
             return statement;
 
@@ -54,7 +58,7 @@ public class Students implements CRUD{
         return new Object();
     }
 
-    public  saif.rest.springrest.DAO.Students getUser(String userName) {
+    public Students getUser(String userName) {
         String selectQuery = "SELECT uuid,email,password FROM uni.users WHERE email = ? ";
         return jdbcTemplate.queryForObject(selectQuery,new StudentMapper(),userName);
     }
@@ -63,13 +67,13 @@ public class Students implements CRUD{
         return BCrypt.verifyer().verify(reqPass.toCharArray(), dbPass).verified;
     }
 
-    private static final class StudentMapper implements RowMapper<saif.rest.springrest.DAO.Students> {
+    private static final class StudentMapper implements RowMapper<Students> {
 
         @Override
-        public saif.rest.springrest.DAO.Students mapRow(ResultSet rs, int rowNum) throws SQLException {
-            saif.rest.springrest.DAO.Students student = new  saif.rest.springrest.DAO.Students();
+        public Students mapRow(ResultSet rs, int rowNum) throws SQLException {
+            Students student = new  Students();
             student.setId(rs.getString("uuid"));
-            student.setName(rs.getString("email"));
+            student.setEmail(rs.getString("email"));
             student.setPassword(rs.getString("password"));
             return student;
         }
