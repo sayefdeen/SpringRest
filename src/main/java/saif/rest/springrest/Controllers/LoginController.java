@@ -4,12 +4,9 @@ package saif.rest.springrest.Controllers;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 import saif.rest.springrest.DAO.Students;
-import saif.rest.springrest.Services.CRUD;
+import saif.rest.springrest.Log.Logger;
 import saif.rest.springrest.Services.StudentsService;
 
 import javax.servlet.http.HttpServletResponse;
@@ -38,17 +35,22 @@ public class LoginController {
                             .withClaim("id",newStudent.getId())
                             .withClaim("name",newStudent.getEmail().split("@")[0])
                             .sign(algorithm);
+                    response.setStatus(HttpServletResponse.SC_OK);
+                    Logger.getLogger().addLog("User has logged" + " " + newStudent.getId());
                     return "toke: " + token;
                 } catch (JWTCreationException exception){
                     response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                    Logger.getLogger().addLog("Something wend Bad!!" + " " + exception.getMessage());
                     return "Something wend Bad!!";
                 }
             }else{
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                Logger.getLogger().addLog("Invalid Credentials" + " " + newStudent.getId() );
                 return "Invalid Credentials";
             }
         }else{
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            Logger.getLogger().addLog("Invalid Credentials");
             return "Invalid Credentials";
         }
     }
